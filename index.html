@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unseen World — Discover. Explore. Remember.</title>
+<meta name="description" content="Explore hidden destinations, plan journeys, and track every place you discover.">
+<meta name="theme-color" content="#06181A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%2313A89A'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M8 16h16M16 8c3 3 3 13 0 16M16 8c-3 3-3 13 0 16' fill='none' stroke='white' stroke-width='1.6'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#F3F8F4;--sf:#fff;--sf2:#E3EFE8;--tx:#0C2420;--mu:#50685F;--ln:rgba(12,36,32,.13);--v:#0FA968;--w:#E9A82B;--ac:#E5483D}
+:root.dark{--bg:#06181A;--sf:#0C2A27;--sf2:#123A35;--tx:#EAF6F0;--mu:#8FB5A8;--ln:rgba(234,246,240,.12)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px;color-scheme:light}
+html.dark{color-scheme:dark}
+body{font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--tx);padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+h1,h2,h3{line-height:1.1;letter-spacing:-.02em;text-wrap:balance}
+.mu{color:var(--mu)}
+.wrap{max-width:1080px;margin:auto;padding:0 20px}
+section{padding:64px 0}
+section h2{font-size:clamp(1.8rem,5vw,2.6rem)}
+section>.wrap>p{margin:10px 0 28px;font-size:1.05rem}
+header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--sf) 80%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--ln);padding-top:env(safe-area-inset-top)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:800;font-size:1.1rem;text-decoration:none;color:var(--tx)}
+nav.top{display:none;gap:4px}
+nav.top a{padding:8px 14px;border-radius:99px;color:var(--mu);text-decoration:none;font-size:.9rem;font-weight:600}
+nav.top a:hover{background:var(--sf2);color:var(--tx)}
+@media(min-width:900px){nav.top{display:flex}.tabbar{display:none!important}body{padding-bottom:0}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 20px;border-radius:99px;border:1px solid var(--ln);background:var(--sf);color:var(--tx);font:600 .9rem inherit;font-family:inherit;cursor:pointer;text-decoration:none}
+.btn:active{transform:scale(.97)}
+.btn.p{background:linear-gradient(135deg,#0FA968,#0B8F7E);color:#fff;border:0}
+.btn.sm{min-height:36px;padding:0 14px;font-size:.8rem}
+.btn.d{color:#D6455D}
+.hero{min-height:calc(100svh - 60px);display:flex;align-items:center;color:#fff;background:radial-gradient(50% 50% at 82% 25%,rgba(229,72,61,.35),transparent),radial-gradient(60% 60% at 20% 80%,#0f6b4a,transparent),linear-gradient(160deg,#0a2e26,#06181A)}
+.hero h1{font-size:clamp(2.4rem,8vw,4.6rem);max-width:760px}
+.hero p{max-width:540px;margin:18px 0 28px;font-size:1.15rem;color:rgba(255,255,255,.8)}
+.hero .row{display:flex;gap:10px;flex-wrap:wrap}
+.hero .btn:not(.p){background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:22px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+@media(min-width:700px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stats .card{padding:18px}
+.stats b{display:block;font-size:2.2rem;line-height:1.1}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;margin-bottom:12px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+.search{width:100%;min-height:44px;border:1px solid var(--ln);border-radius:14px;background:var(--bg);color:var(--tx);padding:0 14px;font:inherit;font-size:16px}
+.cont{margin:18px 0 8px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mu)}
+.grid{display:flex;flex-wrap:wrap;gap:8px}
+dialog{background:var(--sf);color:var(--tx);border:1px solid var(--ln);border-radius:22px;max-width:min(92vw,480px);padding:24px}dialog::backdrop{background:rgba(0,0,0,.6)}
+.gz{display:flex;gap:8px;justify-content:center;margin-top:10px}.pin{fill:#E5483D;stroke:#fff;stroke-width:1.5;pointer-events:none}.pin.v{fill:var(--v)}.pin.w{fill:var(--w)}
+.globe{max-width:480px;margin:0 auto}.globe svg{width:100%;height:auto;display:block;touch-action:none;cursor:grab}.globe svg:active{cursor:grabbing}
+.oc{fill:color-mix(in srgb,#1FB5A8 18%,var(--sf));stroke:var(--ln);stroke-width:1}.gr{fill:none;stroke:var(--ln);stroke-width:.4}
+.ct{fill:color-mix(in srgb,var(--mu) 35%,var(--sf));stroke:var(--bg);stroke-width:.5;cursor:pointer}.ct:hover{filter:brightness(1.2)}.ct.v{fill:var(--v)}.ct.w{fill:var(--w)}.ct.sel{stroke:var(--tx);stroke-width:1.6}
+#countries{max-height:300px;overflow:auto}
+#cp{position:fixed;left:0;right:0;bottom:0;z-index:50;max-width:560px;margin:auto;max-height:85svh;overflow:auto;border-radius:22px 22px 0 0;transform:translateY(110%);transition:transform .25s;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -20px 50px -20px rgba(0,0,0,.5)}#cp.on{transform:none}
+.tile{min-height:40px;padding:0 14px;border-radius:12px;border:1px solid var(--ln);background:var(--sf2);color:var(--tx);font:600 .85rem inherit;font-family:inherit;cursor:pointer}
+.tile.v{background:var(--v);color:#04211E;border-color:var(--v)}
+.tile.w{background:var(--w);color:#2b1c00;border:1px dashed rgba(0,0,0,.4)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.chip{min-height:38px;padding:0 16px;border-radius:99px;border:1px solid var(--ln);background:var(--sf);color:var(--tx);font:600 .82rem inherit;font-family:inherit;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--tx);color:var(--bg)}
+.cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.dest .art{height:150px;display:flex;align-items:flex-end;padding:14px;color:#fff;font-weight:700;border-radius:22px 22px 0 0;background:linear-gradient(135deg,hsl(var(--h) 55% 34%),hsl(calc(var(--h) + 40) 60% 20%))}
+.dest .art{position:relative;overflow:hidden;text-shadow:0 1px 8px rgba(0,0,0,.5)}.dest .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.dest .art::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.65))}.dest .art span{position:relative;z-index:1}
+.plans{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.plan{padding:24px;display:flex;flex-direction:column;gap:10px}.plan.pop{border:2px solid var(--v)}.plan .pr{font-size:2.4rem;font-weight:800}.plan ul{list-style:none;padding:0;display:grid;gap:6px;flex:1;font-size:.9rem}.plan li::before{content:"✓ ";color:var(--v);font-weight:700}
+.dest .bd{padding:16px}
+.dest p{font-size:.9rem;margin:6px 0 10px}
+.tag{display:inline-block;padding:3px 10px;border-radius:99px;background:var(--sf2);font-size:.72rem;font-weight:600;margin-right:4px}
+form.card{padding:22px;display:grid;gap:14px}
+label{display:block;font-size:.8rem;font-weight:600;margin-bottom:4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+textarea.search{padding:10px 14px;min-height:80px}
+.split{display:grid;gap:20px}
+@media(min-width:900px){.split{grid-template-columns:5fr 7fr}}
+.item{padding:16px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.list{display:grid;gap:10px;align-content:start}
+.alt{background:var(--sf2);border-block:1px solid var(--ln)}
+.tabbar{position:fixed;inset:auto 0 0 0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--sf) 85%,transparent);backdrop-filter:blur(18px);border-top:1px solid var(--ln)}
+.tabbar a{text-align:center;padding:8px 2px;font-size:.72rem;font-weight:600;color:var(--mu);text-decoration:none;border-radius:12px}
+.tabbar a span{display:block;font-size:1.2rem;line-height:1.2}
+.tabbar a em{font-style:normal}
+.tabbar a:active{background:var(--sf2)}
+#toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:99px;font-size:.85rem;font-weight:600;z-index:60;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+footer{padding:32px 0;border-top:1px solid var(--ln);font-size:.85rem}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.badge{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;background:var(--sf);border:1px solid var(--ln);border-radius:22px;min-width:120px}
+.badge span{font-size:2rem;margin-bottom:8px}
+.badge b{font-size:.9rem}
+.badge.locked{opacity:.4;filter:grayscale(1)}
+</style>
+<script>try{var t=JSON.parse(localStorage.getItem('uw:theme'));if(t?t==='dark':!matchMedia('(prefers-color-scheme: light)').matches)document.documentElement.classList.add('dark')}catch(e){document.documentElement.classList.add('dark')}</script>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="logo" href="#top">🌍 Unseen World</a>
+  <nav class="top">
+    <a href="#map" data-i="map">Map</a>
+    <a href="#discover" data-i="disc">Discover</a>
+    <a href="#planner" data-i="plan">Planner</a>
+    <a href="#memories" data-i="mem">Memories</a>
+    <a href="#profile" data-i="profile">Profile</a>
+  </nav>
+  <div style="display:flex;gap:8px">
+    <select class="btn sm" id="lang" aria-label="Language">
+      <option value="en">English</option>
+      <option value="bn">বাংলা</option>
+      <option value="hi">हिन्दी</option>
+      <option value="ar">العربية</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="zh">中文</option>
+      <option value="ja">日本語</option>
+    </select>
+    <button class="btn sm" id="theme" aria-label="Toggle theme">🌓</button>
+    <button class="btn sm p" id="install" hidden>Install</button>
+    <button class="btn sm" id="share">Share</button>
+  </div>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <h1 data-i="h1">Discover the World Beyond the Ordinary</h1>
+  <p data-i="hp">Explore hidden destinations, plan unforgettable journeys, and keep track of every place you discover.</p>
+  <div class="row"><a class="btn p" href="#map" data-i="c1">Explore the World</a><a class="btn" href="#planner" data-i="c2">Plan My Trip</a></div>
+</div></section>
+
+<section id="map"><div class="wrap">
+  <h2 data-i="mapH">Your world, one country at a time</h2>
+  <p class="mu">Spin the globe, tap any country and share your Unseen story with the world.</p>
+  <div class="stats" id="stats"></div>
+  <div class="legend"><span><i style="background:var(--v)"></i>Visited</span><span><i style="background:var(--w)"></i>Wishlist</span><span><i style="background:var(--sf2);border:1px solid var(--ln)"></i>Not yet</span></div>
+  <div id="globe" class="globe"><div class="sk" style="aspect-ratio:1;border-radius:50%;background:var(--sf2)"></div></div>
+  <div class="gz"><button class="btn sm" data-z="1" aria-label="Zoom in">＋</button><button class="btn sm" data-z="-1" aria-label="Zoom out">－</button><button class="btn sm" data-z="0" aria-label="Reset globe">⌂</button></div>
+  <p class="mu" style="font-size:.85rem;margin:8px 0 16px;text-align:center">Drag to spin · zoom · tap a country or search any city</p>
+  <input class="search" id="cq" type="search" placeholder="Search any country or city…" aria-label="Find a country">
+  <div id="cityres" class="grid" style="margin-top:10px"></div>
+  <div id="countries"></div>
+  <div style="margin-top:18px"><button class="btn sm d" id="reset">Reset map</button></div>
+</div></section>
+
+<section id="discover" class="alt"><div class="wrap">
+  <h2 data-i="discH">Destination Discovery</h2>
+  <p class="mu">Pick a category and save places to your wishlist.</p>
+  <div class="chips" id="chips" role="group" aria-label="Categories"></div>
+  <div class="cards" id="dests"></div>
+</div></section>
+
+<section id="trending" class="alt" style="padding-top:0"><div class="wrap">
+  <h2>Trending Destinations</h2>
+  <p class="mu">Handpicked places that are capturing the world's imagination right now.</p>
+  <div class="cards" id="trending-cards"></div>
+</div></section>
+
+<section id="planner"><div class="wrap">
+  <h2 data-i="planH">AI Travel Planner</h2>
+  <p class="mu">Plan Your Perfect Journey With AI.</p>
+  <div class="split">
+    <form class="card" id="tripf" novalidate>
+      <div><label for="tn">Trip name</label><input class="search" id="tn" maxlength="80" placeholder="e.g. Summer in Kyoto"></div>
+      <div><label for="td">Destination</label><input class="search" id="td" list="dl" maxlength="80" placeholder="City or country"><datalist id="dl"></datalist></div>
+      <div class="two"><div><label for="ts">Start</label><input class="search" id="ts" type="date"></div><div><label for="te">End</label><input class="search" id="te" type="date"></div></div>
+      <div class="two">
+        <div><label for="trav">Number of travelers</label><input class="search" id="trav" type="number" min="1" value="1"></div>
+        <div><label for="tb">Budget (USD)</label><input class="search" id="tb" type="number" min="0" step="50"></div>
+      </div>
+      <div>
+        <label for="tstyle">Travel style</label>
+        <select class="search" id="tstyle">
+          <option value="Budget">Budget</option>
+          <option value="Luxury">Luxury</option>
+          <option value="Adventure">Adventure</option>
+          <option value="Relaxation">Relaxation</option>
+          <option value="Family">Family</option>
+          <option value="Solo">Solo</option>
+        </select>
+      </div>
+      <div><label for="tno">Notes</label><textarea class="search" id="tno" maxlength="500" placeholder="Flights, bookings, ideas"></textarea></div>
+      <div><label for="ti">Itinerary</label><textarea class="search" id="ti" maxlength="1500" placeholder="Day 1: …"></textarea></div>
+      <button class="btn" type="button" id="gen">✨ Create My Trip</button>
+      <p class="mu" id="tlim" style="font-size:.8rem"></p>
+      <button class="btn p" type="submit">Save trip</button>
+    </form>
+    <div class="list" id="trips"></div>
+  </div>
+</div></section>
+
+<section id="memories" class="alt"><div class="wrap">
+  <h2 data-i="memH">Travel Memory</h2>
+  <p class="mu">Keep the places that mattered.</p>
+  <div class="split">
+    <form class="card" id="memf" novalidate>
+      <div><label for="md">Place</label><input class="search" id="md" maxlength="80" placeholder="Where were you?"></div>
+      <div><label for="mdt">Date</label><input class="search" id="mdt" type="date"></div>
+      <div><label for="mt">Story</label><textarea class="search" id="mt" maxlength="600" placeholder="What do you remember?"></textarea></div>
+      <div><label for="mp">Photo (optional)</label><input class="search" id="mp" type="file" accept="image/*"></div>
+      <p class="mu" id="mlim" style="font-size:.8rem"></p><button class="btn p" type="submit">Save memory</button>
+    </form>
+    <div class="list" id="mems"></div>
+  </div>
+</div></section>
+
+<section id="profile"><div class="wrap">
+  <h2>My Travel Map</h2>
+  <p class="mu">Your dashboard preview and public shareable profile.</p>
+  <div class="card" id="pcard" style="padding:22px;max-width:560px"></div>
+</div></section>
+
+<section id="achievements" class="alt"><div class="wrap">
+  <h2>Travel Achievements</h2>
+  <p class="mu">Collect badges as you explore the world.</p>
+  <div class="grid" id="badges"></div>
+</div></section>
+
+<section id="pricing"><div class="wrap">
+  <h2 data-i="priceH">Pricing</h2>
+  <p class="mu">Pick the plan that fits your travel life.</p>
+  <div class="plans" id="plans"></div>
+</div></section>
+</main>
+
+<footer><div class="wrap mu">
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px">
+    <button class="btn sm" data-info="About">About</button>
+    <a class="btn sm" href="#discover">Destinations</a>
+    <a class="btn sm" href="#planner">Travel Planner</a>
+    <a class="btn sm" href="#map">World Map</a>
+    <a class="btn sm" href="#pricing">Pricing</a>
+    <button class="btn sm" data-info="Privacy">Privacy Policy</button>
+    <button class="btn sm" data-info="Terms">Terms</button>
+    <button class="btn sm" data-info="Contact">Contact</button>
+  </div>
+  © 2026 Unseen World · Free to use. Your data stays on this device.
+</div></footer>
+
+<nav class="tabbar" aria-label="Quick sections">
+  <a href="#map"><span>🗺️</span><em data-i="map">Map</em></a>
+  <a href="#discover"><span>🧭</span><em data-i="disc">Discover</em></a>
+  <a href="#planner"><span>📅</span><em data-i="plan">Plan</em></a>
+  <a href="#memories"><span>📸</span><em data-i="mem">Memories</em></a>
+  <a href="#profile"><span>👤</span><em>Profile</em></a>
+</nav>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+(()=>{'use strict';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const S={get(k,f){try{const v=localStorage.getItem('uw:'+k);return v===null?f:JSON.parse(v)}catch(e){return f}},set(k,v){try{localStorage.setItem('uw:'+k,JSON.stringify(v))}catch(e){toast('Storage blocked — changes will not be saved')}}};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2400)}
+
+const C={'North America':['Canada','United States of America','Mexico','Cuba','Guatemala','Costa Rica','Panama','Jamaica'],
+'South America':['Colombia','Venezuela','Ecuador','Peru','Brazil','Bolivia','Chile','Argentina','Uruguay','Paraguay'],
+'Europe':['Iceland','Norway','Sweden','Finland','Ireland','United Kingdom','Netherlands','Belgium','France','Germany','Spain','Portugal','Italy','Switzerland','Austria','Poland','Czechia','Hungary','Croatia','Greece','Romania','Ukraine'],
+'Africa':['Morocco','Algeria','Tunisia','Egypt','Senegal','Ghana','Nigeria','Ethiopia','Kenya','Tanzania','Uganda','Zambia','Namibia','Botswana','South Africa','Madagascar'],
+'Asia':['Turkey','Georgia','Jordan','Israel','Saudi Arabia','United Arab Emirates','India','Nepal','Sri Lanka','Bangladesh','China','Japan','South Korea','Mongolia','Thailand','Vietnam','Laos','Cambodia','Malaysia','Indonesia','Philippines'],
+'Oceania':['Australia','New Zealand','Fiji','Papua New Guinea']};
+const ALL=Object.entries(C).flatMap(([c,l])=>l.map(n=>({n,c})));
+let NAMES=[...new Set(ALL.map(x=>x.n))].sort();
+
+const IMG={'Svaneti':'1464822759023-fed622ff2c3b','Chefchaouen':'1539020140153-e479b8c22e70','Torres del Paine':'1531761535209-180857e963b9','Lofoten Islands':'1520769669658-f07657f5a307','Zanzibar':'1586500036706-41963de24d8b','Palawan':'1518509562904-e7ef99cdcc86','Dolomites':'1506905925346-21bda4d32df4','Annapurna Circuit':'1544735716-392fe2489ffa','Petra':'1579606032821-4e6161c81bd3','Hampi':'1620766165457-a8025baa82e0','Iceland Highlands':'1504893524553-b855bce32c67','Queenstown':'1507699622108-4be3abd695ad','Kyoto':'1493976040374-85c8e12f0c0e','Oaxaca':'1518105779142-d975f22f1b0a'};
+const CATS=['Hidden Gems','Nature','Beaches','Mountains','Historical Places','Adventure','Cultural Experiences'];
+const D=[
+['Svaneti','Georgia','Hidden Gems','Medieval stone towers over alpine villages, with quiet hiking routes.','Jun–Sep','$900–1,400'],
+['Chefchaouen','Morocco','Hidden Gems','A hillside medina washed in blue, with trails into the Rif mountains.','Mar–May','$700–1,200'],
+['Torres del Paine','Chile','Nature','Granite spires, turquoise lakes and guanaco herds in Patagonia.','Nov–Mar','$1,800–2,800'],
+['Lofoten Islands','Norway','Nature','Fishing villages under sharp peaks; midnight sun or northern lights.','Jun–Aug','$2,000–3,200'],
+['Zanzibar','Tanzania','Beaches','Powder-white sand, dhow sailing and Stone Town’s spice-scented alleys.','Jun–Oct','$1,200–2,000'],
+['Palawan','Philippines','Beaches','Limestone cliffs and hidden lagoons around El Nido and Coron.','Nov–May','$900–1,500'],
+['Dolomites','Italy','Mountains','Pale rock towers and a hut network that makes multi-day hiking easy.','Jun–Sep','$1,600–2,600'],
+['Annapurna Circuit','Nepal','Mountains','Terraced valleys, Gurung villages and the high Thorong La pass.','Oct–Nov','$800–1,500'],
+['Petra','Jordan','Historical Places','A rose-red city carved into canyon walls, best at first light.','Mar–May','$1,000–1,700'],
+['Hampi','India','Historical Places','Boulder-strewn Vijayanagara ruins, easy to explore by bicycle.','Oct–Feb','$500–900'],
+['Iceland Highlands','Iceland','Adventure','Glacier hikes, geothermal rivers and summer-only F-roads.','Jul–Aug','$2,200–3,400'],
+['Queenstown','New Zealand','Adventure','Bungy, canyon swings and the Routeburn Track within an hour.','Dec–Feb','$2,000–3,000'],
+['Kyoto','Japan','Cultural Experiences','Tea ceremonies, machiya streets and ever-changing temple gardens.','Mar–Apr','$1,800–2,800'],
+['Oaxaca','Mexico','Cultural Experiences','Mole, mezcal, weaving villages and Day of the Dead.','Oct–Nov','$900–1,500']
+].map(([place,country,cat,desc,best,budget])=>({place,country,cat,desc,best,budget}));
+
+const st={v:new Set(S.get('visited',[]).filter(n=>typeof n==='string')),w:new Set(S.get('wish',[]).filter(n=>typeof n==='string')),
+trips:S.get('trips',[]),mems:S.get('mems',[]),cat:'All'};
+if(!Array.isArray(st.trips))st.trips=[];if(!Array.isArray(st.mems))st.mems=[];
+const PL=['free','explorer','pro'];st.plan=PL.includes(S.get('plan','free'))?S.get('plan','free'):'free';
+const LIM=()=>({t:Infinity,m:Infinity,pro:true});
+
+const PLANS=[
+  ['free','Free','$0','forever',['Basic world map','Destination discovery','Basic trip planning','Limited AI requests']],
+  ['explorer','Explorer','$6','/month',['Unlimited trip planning','AI recommendations','Travel statistics','Unlimited memories']],
+  ['pro','Pro','$14','/month',['Advanced AI travel planner','Detailed itineraries','Budget planner','Priority features','Export trip plan']]
+];
+function renderPlans(){
+  $('#plans').innerHTML=PLANS.map(([id,n,pr,per,f])=>`<div class="card plan ${id==='explorer'?'pop':''}"><h3>${n}</h3><div><span class="pr">${pr}</span> <span class="mu">${per}</span></div><ul>${f.map(x=>`<li>${x}</li>`).join('')}</ul><button class="btn ${st.plan===id?'':'p'}" data-plan="${id}" ${st.plan===id?'disabled':''}>${st.plan===id?'Current plan':'Choose '+n}</button></div>`).join('');
+  const L=LIM();$('#tb').disabled=$('#ti').disabled=!L.pro;
+  $('#tlim').textContent=L.t===Infinity?'':`Free plan: ${st.trips.length} of 3 trips used.`;
+  $('#mlim').textContent=L.m===Infinity?'':`Free plan: ${st.mems.length} of 5 memories used.`;
+}
+$('#plans').addEventListener('click',e=>{const b=e.target.closest('[data-plan]');if(b){st.plan=b.dataset.plan;S.set('plan',st.plan);renderPlans();toast('Plan: '+st.plan)}});
+const save=()=>{S.set('visited',[...st.v]);S.set('wish',[...st.w])};
+const status=n=>st.v.has(n)?'v':st.w.has(n)?'w':'';
+
+function renderStats(){
+  const tot=NAMES.length;
+  const it=[['Countries Explored',st.v.size],['Countries To Discover',Math.max(0,tot-st.v.size)],['Continents',6],['Wishlist',st.w.size]];
+  $('#stats').innerHTML=it.map(([l,v])=>`<div class="card"><span class="mu" style="font-size:.85rem">${l}</span><b>${v}</b></div>`).join('');
+}
+function renderCountries(){
+  const q=$('#cq').value.trim().toLowerCase();
+  const f=NAMES.filter(n=>n.toLowerCase().includes(q));
+  $('#countries').innerHTML=f.length?`<div class="grid" style="margin-top:14px">${f.map(n=>`<button class="tile ${status(n)}" data-n="${esc(n)}">${esc(n)}</button>`).join('')}</div>`:`<p class="mu" style="margin-top:14px">No country matches “${esc(q)}”.</p>`;
+  if(window.paintGlobe)paintGlobe();
+}
+$('#countries').addEventListener('click',e=>{const b=e.target.closest('.tile');if(b)openCountry(b.dataset.n)});
+$('#cq').addEventListener('input',renderCountries);
+$('#reset').onclick=()=>{if(confirm('Clear all visited and wishlist countries?')){st.v.clear();st.w.clear();save();renderStats();renderCountries();renderDests();renderTrending();renderBadges()}};
+
+function renderChips(){
+  $('#chips').innerHTML=['All',...CATS].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${st.cat===c}">${c}</button>`).join('');
+}
+$('#chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;st.cat=b.dataset.c;renderChips();renderDests()});
+
+function renderDests(){
+  const hue=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0),0)*37%360;
+  $('#dests').innerHTML=D.filter(d=>st.cat==='All'||d.cat===st.cat).map(d=>{
+    const on=st.w.has(d.country),vis=st.v.has(d.country);
+    return `<article class="card dest"><div class="art" style="--h:${hue(d.place)}"><img src="https://images.unsplash.com/photo-${IMG[d.place]}?auto=format&fit=crop&w=700&q=70" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><span>${esc(d.place)}, ${esc(d.country)}</span></div><div class="bd"><span class="tag">${esc(d.cat)}</span><span class="tag">${esc(d.best)}</span><span class="tag">${esc(d.budget)}</span><p class="mu">${esc(d.desc)}</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm ${on?'p':''}" data-w="${esc(d.country)}">${vis?'✓ Visited':on?'♥ On wishlist':'♡ Wishlist'}</button><button class="btn sm" data-p="${esc(d.place+', '+d.country)}">Plan trip</button></div></div></article>`}).join('');
+}
+
+function renderTrending(){
+  const hue=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0),0)*37%360;
+  const trending=D.slice(0,6);
+  $('#trending-cards').innerHTML=trending.map(d=>{
+    const on=st.w.has(d.country),vis=st.v.has(d.country);
+    return `<article class="card dest"><div class="art" style="--h:${hue(d.place)}"><img src="https://images.unsplash.com/photo-${IMG[d.place]}?auto=format&fit=crop&w=700&q=70" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><span>${esc(d.place)}</span></div><div class="bd"><span class="tag">${esc(d.country)}</span><span class="tag">Best: ${esc(d.best)}</span><span class="tag">Budget: ${esc(d.budget)}</span><p class="mu">${esc(d.desc)}</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm ${on?'p':''}" data-w="${esc(d.country)}">${vis?'✓ Visited':on?'♥ On wishlist':'♡ Wishlist'}</button><button class="btn sm" data-v="${esc(d.place)}">View Destination</button></div></div></article>`}).join('');
+}
+
+$('#dests').addEventListener('click',e=>{
+  const w=e.target.closest('[data-w]'),p=e.target.closest('[data-p]');
+  if(w){const n=w.dataset.w;if(st.v.has(n)){toast('Already visited');return}
+    if(st.w.has(n))st.w.delete(n);else st.w.add(n);save();renderStats();renderCountries();renderDests();renderTrending();renderBadges();toast(st.w.has(n)?'Added to wishlist':'Removed from wishlist')}
+  if(p){$('#td').value=p.dataset.p;if(!$('#tn').value)$('#tn').value='Trip to '+p.dataset.p.split(',')[0];location.hash='#planner'}
+});
+
+$('#trending-cards').addEventListener('click',e=>{
+  const w=e.target.closest('[data-w]'),v=e.target.closest('[data-v]');
+  if(w){const n=w.dataset.w;if(st.v.has(n)){toast('Already visited');return}
+    if(st.w.has(n))st.w.delete(n);else st.w.add(n);save();renderStats();renderCountries();renderDests();renderTrending();renderBadges();toast(st.w.has(n)?'Added to wishlist':'Removed from wishlist')}
+  if(v){const d=D.find(x=>x.place===v.dataset.v);if(d)openCountry(d.country)}
+});
+
+$('#dl').innerHTML=D.map(d=>`<option value="${esc(d.place+', '+d.country)}">`).join('')+ALL.map(x=>`<option value="${esc(x.n)}">`).join('');
+const fd=iso=>{const d=new Date(iso+'T00:00:00');return isNaN(d)?iso:d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'})};
+function renderTrips(){
+  $('#trips').innerHTML=st.trips.length?st.trips.map(t=>`<div class="card item"><div><h3 style="font-size:1.1rem">${esc(t.name)}</h3><div class="mu" style="font-size:.85rem">${esc(t.dest)} · ${fd(t.start)} → ${fd(t.end)} · ${esc(t.travelers||1)} travelers · ${esc(t.style||'Budget')}</div>${t.budget?`<div class="tag" style="margin-top:6px">Budget $${esc(t.budget)}</div>`:''}${t.notes?`<p class="mu" style="font-size:.88rem;margin-top:6px">${esc(t.notes)}</p>`:''}${t.itin?`<p class="mu" style="font-size:.85rem;margin-top:6px;white-space:pre-wrap">${esc(t.itin)}</p>`:''}</div><button class="btn sm d" data-dt="${t.id}" aria-label="Delete ${esc(t.name)}">Delete</button></div>`).join(''):'<div class="card item mu">No trips yet. Save your first one.</div>';
+}
+$('#tripf').addEventListener('submit',e=>{
+  e.preventDefault();
+  const t={id:uid(),name:$('#tn').value.trim(),dest:$('#td').value.trim(),start:$('#ts').value,end:$('#te').value,notes:$('#tno').value.trim(),travelers:$('#trav').value,style:$('#tstyle').value,budget:LIM().pro?$('#tb').value:'',itin:LIM().pro?$('#ti').value.trim():''};
+  if(st.trips.length>=LIM().t){location.hash='#pricing';return toast('Free plan allows 3 trips — upgrade or delete one')}
+  if(!t.name||!t.dest||!t.start||!t.end)return toast('Fill in name, destination and both dates');
+  if(t.end<t.start)return toast('End date must be after the start date');
+  st.trips.unshift(t);S.set('trips',st.trips);e.target.reset();renderTrips();renderPlans();toast('Trip saved');
+});
+$('#trips').addEventListener('click',e=>{const b=e.target.closest('[data-dt]');if(b){st.trips=st.trips.filter(t=>t.id!==b.dataset.dt);S.set('trips',st.trips);renderTrips();renderPlans();toast('Trip deleted')}});
+
+let PH='';
+function renderMems(){
+  $('#mems').innerHTML=st.mems.length?st.mems.map(m=>`<div class="card item"><div>${m.img?`<img src="${m.img}" alt="" style="width:100%;max-width:260px;border-radius:14px;margin-bottom:8px;display:block">`:''}<h3 style="font-size:1.1rem">${esc(m.place)}</h3>${m.date?`<div class="mu" style="font-size:.8rem">${fd(m.date)}</div>`:''}<p class="mu" style="font-size:.9rem;margin-top:6px">${esc(m.text)}</p></div><button class="btn sm d" data-dm="${m.id}" aria-label="Delete memory">Delete</button></div>`).join(''):'<div class="card item mu">No memories yet. Add one.</div>';
+}
+$('#memf').addEventListener('submit',e=>{
+  e.preventDefault();
+  const m={id:uid(),place:$('#md').value.trim(),date:$('#mdt').value,text:$('#mt').value.trim(),img:PH};
+  if(!m.place||!m.text)return toast('Add a place and a short story');
+  if(st.mems.length>=LIM().m){location.hash='#pricing';return toast('Free plan allows 5 memories — upgrade or delete one')}
+  st.mems.unshift(m);S.set('mems',st.mems);e.target.reset();PH='';renderMems();renderPlans();toast('Memory saved');
+});
+$('#mems').addEventListener('click',e=>{const b=e.target.closest('[data-dm]');if(b){st.mems=st.mems.filter(m=>m.id!==b.dataset.dm);S.set('mems',st.mems);renderMems();renderPlans();toast('Memory deleted')}});
+
+function renderBadges(){
+  const badges=[
+    {name:'First Adventure',icon:'🎒',req:()=>st.v.size>=1},
+    {name:'5 Countries',icon:'✈️',req:()=>st.v.size>=5},
+    {name:'10 Countries',icon:'🌍',req:()=>st.v.size>=10},
+    {name:'Asia Explorer',icon:'🏯',req:()=>[...st.v].some(n=>C['Asia'].includes(n))},
+    {name:'Europe Explorer',icon:'🏰',req:()=>[...st.v].some(n=>C['Europe'].includes(n))},
+    {name:'World Explorer',icon:'🗺️',req:()=>st.v.size>=20},
+    {name:'Hidden Gem Hunter',icon:'💎',req:()=>st.w.size>=3}
+  ];
+  $('#badges').innerHTML=badges.map(b=>`<div class="badge ${b.req()?'':'locked'}"><span>${b.icon}</span><b>${b.name}</b></div>`).join('');
+}
+
+$('#theme').onclick=()=>{const d=document.documentElement.classList.toggle('dark');S.set('theme',d?'dark':'light');document.querySelector('meta[name=theme-color]').content=d?'#06181A':'#F3F8F4'};
+$('#share').onclick=async()=>{
+  const d={title:'Unseen World',text:'Discover. Explore. Remember.',url:location.href};
+  try{if(navigator.share)await navigator.share(d);else{await navigator.clipboard.writeText(location.href);toast('Link copied')}}catch(e){}
+};
+
+/* ---------- Languages ---------- */
+const T={
+en:{map:'Map',disc:'Discover',plan:'Planner',mem:'Memories',price:'Pricing',profile:'Profile',h1:'Discover the World Beyond the Ordinary',hp:'Explore hidden destinations, plan unforgettable journeys, and keep track of every place you discover.',c1:'Explore the World',c2:'Plan My Trip',mapH:'Your world, one country at a time',discH:'Destination Discovery',planH:'AI Travel Planner',memH:'Travel Memory',priceH:'Pricing'},
+bn:{map:'মানচিত্র',disc:'আবিষ্কার',plan:'পরিকল্পনা',mem:'স্মৃতি',price:'মূল্য',profile:'প্রোফাইল',h1:'সাধারণের বাইরের পৃথিবী আবিষ্কার করুন',hp:'লুকানো গন্তব্য ঘুরে দেখুন, অবিস্মরণীয় ভ্রমণের পরিকল্পনা করুন এবং প্রতিটি আবিষ্কৃত স্থান মনে রাখুন।',c1:'বিশ্ব ঘুরে দেখুন',c2:'আমার ভ্রমণ পরিকল্পনা',mapH:'আপনার পৃথিবী, একটি একটি দেশে',discH:'গন্তব্য আবিষ্কার',planH:'এআই ভ্রমণ পরিকল্পনাকারী',memH:'ভ্রমণ স্মৃতি',priceH:'মূল্য'},
+hi:{map:'मानचित्र',disc:'खोजें',plan:'योजना',mem:'यादें',price:'कीमत',profile:'प्रोफ़ाइल',h1:'साधारण से परे दुनिया खोजें',hp:'छिपे हुए गंतव्य खोजें, यादगार यात्राओं की योजना बनाएँ और हर खोजी गई जगह याद रखें।',c1:'दुनिया घूमें',c2:'मेरी यात्रा योजना',mapH:'आपकी दुनिया, एक-एक देश',discH:'गंतव्य खोज',planH:'एआई यात्रा योजनाकार',memH:'यात्रा की यादें',priceH:'कीमत'},
+ar:{map:'الخريطة',disc:'اكتشف',plan:'التخطيط',mem:'الذكريات',price:'الأسعار',profile:'الملف الشخصي',h1:'اكتشف عالماً يتجاوز المألوف',hp:'استكشف وجهات خفية، وخطط لرحلات لا تُنسى، وتتبّع كل مكان تكتشفه.',c1:'استكشف العالم',c2:'خطط لرحلتي',mapH:'عالمك، دولة بعد دولة',discH:'اكتشاف الوجهات',planH:'مخطط السفر بالذكاء الاصطناعي',memH:'ذكريات السفر',priceH:'الأسعار'},
+es:{map:'Mapa',disc:'Descubrir',plan:'Planificar',mem:'Recuerdos',price:'Precios',profile:'Perfil',h1:'Descubre el mundo más allá de lo ordinario',hp:'Explora destinos ocultos, planifica viajes inolvidables y guarda cada lugar que descubras.',c1:'Explorar el mundo',c2:'Planear mi viaje',mapH:'Tu mundo, un país a la vez',discH:'Descubrimiento de destinos',planH:'Planificador de viajes con IA',memH:'Recuerdos de viaje',priceH:'Precios'},
+fr:{map:'Carte',disc:'Découvrir',plan:'Planifier',mem:'Souvenirs',price:'Tarifs',profile:'Profil',h1:'Découvrez un monde hors du commun',hp:'Explorez des destinations cachées, planifiez des voyages inoubliables et gardez la trace de chaque lieu découvert.',c1:'Explorer le monde',c2:'Planifier mon voyage',mapH:'Votre monde, un pays à la fois',discH:'Découverte de destinations',planH:'Planificateur de voyage IA',memH:'Souvenirs de voyage',priceH:'Tarifs'},
+zh:{map:'地图',disc:'探索',plan:'规划',mem:'回忆',price:'价格',profile:'个人资料',h1:'发现非凡的世界',hp:'探索隐秘目的地，规划难忘旅程，记录你发现的每个地方。',c1:'探索世界',c2:'规划我的旅行',mapH:'你的世界，一国一国地点亮',discH:'目的地探索',planH:'AI旅行规划',memH:'旅行回忆',priceH:'价格'},
+ja:{map:'地図',disc:'発見',plan:'計画',mem:'思い出',price:'料金',profile:'プロフィール',h1:'日常の向こうにある世界へ',hp:'隠れた目的地を探し、忘れられない旅を計画し、見つけた場所を記録しましょう。',c1:'世界を探索',c2:'旅行を計画',mapH:'あなたの世界を一国ずつ',discH:'目的地の発見',planH:'AI旅行プランナー',memH:'旅行の思い出',priceH:'料金'}};
+function applyLang(l){
+  if(!T[l])l='en';
+  document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';
+  document.querySelectorAll('[data-i]').forEach(el=>{el.textContent=T[l][el.dataset.i]??T.en[el.dataset.i]});
+  $('#lang').value=l;S.set('lang',l);
+}
+$('#lang').onchange=e=>applyLang(e.target.value);
+
+/* ---------- Globe + Unseen country pages ---------- */
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let GLOBE=null,paused=false,resumeT,SEL=null;
+const cp=document.createElement('div');cp.id='cp';cp.className='card';cp.setAttribute('role','dialog');cp.setAttribute('aria-label','Country page');document.body.appendChild(cp);
+window.paintGlobe=()=>{if(GLOBE)GLOBE.cs.attr('class',d=>{const n=d.properties.name;return 'ct '+status(n)+(n===SEL?' sel':'')})};
+const FEAT={},CITIES=(()=>{const c=S.get('cities',[]);return Array.isArray(c)?c.filter(x=>x&&x.k):[]})();
+let CUR=null,TMP=null;
+async function initGlobe(){
+  const box=$('#globe');
+  if(!window.d3||!window.topojson){box.innerHTML='<p class="mu" style="text-align:center">The globe needs internet the first time. The country list below still works.</p>';return}
+  try{
+    const w=await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json').then(r=>r.json());
+    const feats=topojson.feature(w,w.objects.countries).features.filter(f=>f.properties&&f.properties.name);
+    feats.forEach(f=>FEAT[f.properties.name]=f);
+    NAMES=[...new Set([...feats.map(f=>f.properties.name),...ALL.map(x=>x.n)])].sort((a,b)=>a.localeCompare(b));
+    const proj=d3.geoOrthographic().scale(236).translate([250,250]).rotate([-90,-22]).clipAngle(90),path=d3.geoPath(proj);
+    const svg=d3.select(box).html('').append('svg').attr('viewBox','0 0 500 500').attr('role','group').attr('aria-label','Interactive globe. Tap a country.');
+    const oc=svg.append('circle').attr('class','oc').attr('cx',250).attr('cy',250).attr('r',236);
+    const gr=svg.append('path').attr('class','gr').datum(d3.geoGraticule10());
+    const cs=svg.selectAll('.ct').data(feats).join('path').attr('class','ct').attr('data-n',d=>d.properties.name).each(function(d){d3.select(this).append('title').text(d.properties.name)});
+    const pg=svg.append('g');
+    const pins=()=>{const c=proj.invert([250,250]),data=[...CITIES,...(TMP?[TMP]:[])];
+      pg.selectAll('circle').data(data,d=>d.k).join('circle').attr('r',Math.max(4,Math.min(8,proj.scale()/60))).attr('class',d=>'pin '+(d.s||'')).each(function(d){const p=proj([d.lon,d.lat]);d3.select(this).attr('cx',p[0]).attr('cy',p[1]).style('display',d3.geoDistance([d.lon,d.lat],c)<1.5?'':'none')})};
+    const draw=()=>{oc.attr('r',proj.scale());gr.attr('d',path);cs.attr('d',path);pins()};
+    const clamp=k=>Math.max(236,Math.min(2800,k));
+    const flyTo=(lon,lat,k)=>{const r0=proj.rotate(),r1=[-lon,-lat,0];while(r1[0]-r0[0]>180)r1[0]-=360;while(r1[0]-r0[0]<-180)r1[0]+=360;
+      const ir=d3.interpolate(r0,r1),ik=d3.interpolate(proj.scale(),clamp(k)),t0=performance.now(),Dur=reduced?1:700;paused=true;
+      (function step(t){const u=Math.min(1,(t-t0)/Dur),e=d3.easeCubicInOut(u);proj.rotate(ir(e));proj.scale(ik(e));draw();if(u<1)requestAnimationFrame(step)})(t0)};
+    svg.call(d3.drag().on('start',()=>{paused=true;clearTimeout(resumeT)}).on('drag',e=>{const r=proj.rotate(),f=.35*236/proj.scale();proj.rotate([r[0]+e.dx*f,Math.max(-85,Math.min(85,r[1]-e.dy*f))]);draw()}).on('end',()=>{resumeT=setTimeout(()=>{if(!SEL&&!CUR)paused=false},2500)}));
+    svg.on('click',e=>{const p=e.target.closest('.ct');if(p)openCountry(p.dataset.n)});
+    svg.on('wheel',e=>{e.preventDefault();paused=true;proj.scale(clamp(proj.scale()*(e.deltaY<0?1.15:.87)));draw()},{passive:false});
+    GLOBE={cs,proj,feats,draw,flyTo,clamp};
+    window.flyToCountry=n=>{const f=FEAT[n];if(!f)return;const [[x0,y0],[x1,y1]]=d3.geoBounds(f);let dx=x1-x0;if(dx<0)dx+=360;const span=Math.max(dx,y1-y0),c=d3.geoCentroid(f);flyTo(c[0],c[1],236*75/Math.max(span,6))};
+    draw();renderCountries();renderStats();
+    if(SEL)flyToCountry(SEL);
+    let f=0;(function tick(){if(!paused&&!reduced&&!document.hidden&&proj.scale()<250&&++f%2===0){const r=proj.rotate();proj.rotate([r[0]+.3,r[1]]);draw()}requestAnimationFrame(tick)})();
+  }catch(e){box.innerHTML='<p class="mu" style="text-align:center">Could not load the globe. The country list below still works.</p>'}
+}
+document.querySelector('.gz').addEventListener('click',e=>{const b=e.target.closest('[data-z]');if(!b||!GLOBE)return;const z=+b.dataset.z,P=GLOBE.proj;paused=true;
+  if(z===0){TMP=null;CUR=null;SEL=null;cp.classList.remove('on');const r=P.rotate();GLOBE.flyTo(-r[0],-r[1],236);paintGlobe();setTimeout(()=>paused=false,900)}
+  else{P.scale(GLOBE.clamp(P.scale()*(z>0?1.6:.62)));GLOBE.draw()}});
+/* city search (OpenStreetMap Nominatim, free) */
+const CR=[];let cT;
+$('#cq').addEventListener('input',()=>{clearTimeout(cT);const q=$('#cq').value.trim();$('#cityres').innerHTML='';if(q.length<3)return;cT=setTimeout(()=>searchCity(q),500)});
+async function searchCity(q){
+  try{
+    const r=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=5&accept-language=en&featuretype=city&q='+encodeURIComponent(q)).then(r=>r.json());
+    CR.length=0;r.forEach(x=>CR.push({name:x.name||x.display_name.split(',')[0],country:(x.address&&x.address.country)||'',lat:+x.lat,lon:+x.lon}));
+    $('#cityres').innerHTML=CR.map((c,i)=>`<button class="tile" data-c="${i}">📍 ${esc(c.name)}${c.country?', '+esc(c.country):''}</button>`).join('');
+  }catch(e){$('#cityres').innerHTML='<span class="mu" style="font-size:.85rem">City search needs internet.</span>'}
+}
+$('#cityres').addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(b)openCity(CR[+b.dataset.c])});
+function openCity(c){
+  const k=c.name+', '+c.country,ex=CITIES.find(x=>x.k===k);
+  CUR={kind:'t',name:c.name,country:c.country,k,lat:c.lat,lon:c.lon};SEL=FEAT[c.country]?c.country:null;
+  TMP=ex?null:{k,name:c.name,country:c.country,lat:c.lat,lon:c.lon,s:''};
+  renderCP();cp.classList.add('on');paintGlobe();if(GLOBE){GLOBE.flyTo(c.lon,c.lat,1600)}paused=true;
+}
+const cityS=()=>{const e=CITIES.find(x=>x.k===CUR.k);return e?e.s:''};
+function markCity(k){
+  const s0=cityS();let e=CITIES.find(x=>x.k===CUR.k);
+  if(!e){e={k:CUR.k,name:CUR.name,country:CUR.country,lat:CUR.lat,lon:CUR.lon,s:''};CITIES.push(e)}
+  e.s=s0===k?'':k;TMP=null;if(!e.s)CITIES.splice(CITIES.indexOf(e),1);
+  S.set('cities',CITIES);GLOBE&&GLOBE.draw();renderCP();renderStats();
+}
+function mark(n,k){const s0=status(n);st.v.delete(n);st.w.delete(n);if(k==='v'&&s0!=='v')st.v.add(n);if(k==='w'&&s0!=='w')st.w.add(n);save();renderStats();renderCountries();renderDests();renderTrending();renderBadges();renderCP()}
+function openCountry(n){CUR={kind:'c',name:n};SEL=n;TMP=null;paused=true;renderCP();cp.classList.add('on');paintGlobe();if(window.flyToCountry)flyToCountry(n)}
+function closeCP(){SEL=null;CUR=null;TMP=null;paused=false;cp.classList.remove('on');paintGlobe();GLOBE&&GLOBE.draw()}
+
+function renderCP(){
+  if(!CUR)return;const city=CUR.kind==='t',n=CUR.name,s0=city?cityS():status(n),keep=$('#cs')?$('#cs').value:'';
+  cp.innerHTML=`<div class="item" style="padding-bottom:0"><div><span class="tag">${city?'City · '+esc(CUR.country):'Country'}</span><h3 style="font-size:1.7rem;margin-top:6px">Unseen ${esc(n)}</h3></div><button class="btn sm" data-x aria-label="Close">✕</button></div>
+  ${city?'':'<div id="facts" style="padding:8px 16px 0"></div>'}
+  <div style="padding:16px;display:grid;gap:12px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn sm ${s0==='v'?'p':''}" data-m="v">✓ Visited</button>
+      <button class="btn sm ${s0==='w'?'p':''}" data-m="w">♥ Wishlist</button>
+    </div>
+    <div><label for="cs">Your Unseen ${esc(n)} story</label><textarea class="search" id="cs" maxlength="280" placeholder="A hidden place, a local tip, a moment you will never forget…">${esc(keep)}</textarea></div>
+    <div style="background:var(--sf2);padding:12px;border-radius:14px;border:1px solid var(--ln)">
+      <p style="font-size:.85rem;font-weight:600;margin-bottom:8px;color:var(--tx)">📸 Share your achievement to social media</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn sm p" data-sh="fb" style="background:#1877F2;border:0">📘 Facebook</button>
+        <button class="btn sm" data-sh="x">𝕏 X</button>
+        <button class="btn sm" data-sh="wa">💬 WhatsApp</button>
+        <button class="btn sm" data-sh="tg">✈️ Telegram</button>
+        <button class="btn sm" data-sh="img">🖼️ Save Image</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn sm" data-sh="save">💾 Save story to Memories</button>
+    </div>
+  </div>`;
+  if(!city)loadFacts(n);
+}
+
+function wrapText(x,t,cx,y,mw,lh,max){const w=t.split(/\s+/);let l='',n=0;for(const a of w){const T=l?l+' '+a:a;if(x.measureText(T).width>mw&&l){x.fillText(l,cx,y);y+=lh;l=a;if(++n>=max-1)break}else l=T}x.fillText(n>=max-1&&w.join(' ').length>l.length+1?l+'…':l,cx,y)}
+
+async function makeCard(story){
+  const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#06181A');g.addColorStop(1,'#0d3a2f');x.fillStyle=g;x.fillRect(0,0,W,H);
+  const cx=W/2,cy=650,R=400;
+  if(GLOBE){
+    const p=d3.geoOrthographic().scale(R*GLOBE.proj.scale()/236).translate([cx,cy]).rotate(GLOBE.proj.rotate()).clipAngle(90),pa=d3.geoPath(p,x);
+    x.save();x.beginPath();x.arc(cx,cy,R,0,7);x.clip();x.fillStyle='#0d4a52';x.fillRect(0,0,W,H);
+    for(const f of GLOBE.feats){const n=f.properties.name,s=status(n),sel=n===SEL;x.beginPath();pa(f);x.fillStyle=s==='v'?'#19C37D':s==='w'?'#F2B134':sel?'#E5483D':'#2f6a63';x.fill();x.lineWidth=sel?4:1.2;x.strokeStyle=sel?'#fff':'#06181A';x.stroke()}
+    const cen=p.invert([cx,cy]),all=[...CITIES,...(TMP?[TMP]:[])];
+    if(CUR&&CUR.kind==='t'&&!all.find(a=>a.k===CUR.k))all.push(CUR);
+    for(const a of all){if(d3.geoDistance([a.lon,a.lat],cen)>1.5)continue;const q=p([a.lon,a.lat]);x.beginPath();x.arc(q[0],q[1],13,0,7);x.fillStyle=a.s==='v'?'#19C37D':a.s==='w'?'#F2B134':'#E5483D';x.fill();x.lineWidth=4;x.strokeStyle='#fff';x.stroke()}
+    x.restore();x.beginPath();x.arc(cx,cy,R,0,7);x.lineWidth=6;x.strokeStyle='rgba(255,255,255,.3)';x.stroke();
+  }else{
+    x.beginPath();x.arc(cx,cy,R,0,7);x.fillStyle='#1a4a42';x.fill();
+    x.fillStyle='#fff';x.font='bold 40px sans-serif';x.textAlign='center';x.fillText('Map Preview Unavailable',cx,cy);
+  }
+  x.textAlign='center';x.fillStyle='#fff';let fs=84;
+  const title=CUR.kind==='c'?`I explored ${CUR.name}!`:`I explored ${CUR.name}, ${CUR.country}!`;
+  x.font=`800 ${fs}px system-ui,sans-serif`;
+  while(x.measureText(title).width>W-120&&fs>40){fs-=4;x.font=`800 ${fs}px system-ui,sans-serif`}
+  x.fillText(title,cx,150);
+  x.font='500 36px system-ui,sans-serif';x.fillStyle='#9fd8c4';
+  x.fillText('Marked on Unseen World',cx,205);
+  x.fillStyle='#fff';x.font='500 38px system-ui,sans-serif';
+  wrapText(x,story||'Discovering a place most people never see.',cx,1135,W-160,52,3);
+  x.fillStyle='#19C37D';x.font='700 32px system-ui,sans-serif';
+  x.fillText('#UnseenWorld #Travel',cx,1295);
+  return new Promise(r=>c.toBlob(r,'image/png'));
+}
+
+cp.addEventListener('click',async e=>{
+  if(e.target.closest('[data-x]'))return closeCP();
+  const m=e.target.closest('[data-m]');
+  if(m){
+    if(CUR.kind==='t')markCity(m.dataset.m);
+    else mark(CUR.name,m.dataset.m);
+    if(m.dataset.m==='v'&&(st.v.has(CUR.name)||(CUR.kind==='t'&&cityS()==='v'))){
+      setTimeout(()=>toast('🎉 Marked as Visited! Share it on Facebook?'),500);
+    }
+    return;
+  }
+  const b=e.target.closest('[data-sh]');if(!b)return;
+  const n=CUR.name,story=$('#cs').value.trim();
+  const url=location.href.split('#')[0]+'#unseen='+encodeURIComponent(n);
+  const tag='#UnseenWorld #Travel';
+  const text=(story||`I just explored ${n} on Unseen World! 🌍✈️`)+' '+tag;
+  const q=encodeURIComponent,k=b.dataset.sh;
+
+  if(k==='img'||k==='fb'||k==='x'||k==='wa'||k==='tg'){
+    try{
+      const blob=await makeCard(story);
+      const file=new File([blob],'unseen-'+n.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.png',{type:'image/png'});
+      if(k==='img'){
+        const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=file.name;a.click();
+        toast('Image saved! You can attach it to your post.');return;
+      }
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        try{await navigator.share({files:[file],text:text,url:url});return}
+        catch(err){if(err&&err.name==='AbortError')return}
+      }
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=file.name;a.click();
+      let shareUrl='';
+      if(k==='fb')shareUrl=`https://www.facebook.com/sharer/sharer.php?u=${q(url)}&quote=${q(text+' (Image downloaded - attach it to your post!)')}`;
+      if(k==='x')shareUrl=`https://twitter.com/intent/tweet?text=${q(text)}&url=${q(url)}`;
+      if(k==='wa')shareUrl=`https://wa.me/?text=${q(text+' '+url)}`;
+      if(k==='tg')shareUrl=`https://t.me/share/url?url=${q(url)}&text=${q(text)}`;
+      if(shareUrl)window.open(shareUrl,'_blank','noopener');
+      toast('Image downloaded! Attach it to your post.');
+      return;
+    }catch(x){
+      if(x&&x.name!=='AbortError')toast('Could not create the image');
+      return;
+    }
+  }
+  if(k==='save'){
+    if(!story)return toast('Write a story first');
+    st.mems.unshift({id:uid(),place:'Unseen '+n,date:new Date().toISOString().slice(0,10),text:story});
+    S.set('mems',st.mems);renderMems();renderStats();
+    return toast('Saved to memories');
+  }
+});
+
+addEventListener('keydown',e=>{if(e.key==='Escape'&&CUR)closeCP()});
+function openFromHash(){const m=location.hash.match(/^#unseen=(.+)$/);if(m){try{openCountry(decodeURIComponent(m[1]))}catch(e){}}}
+
+/* ---------- Extras ---------- */
+$('#mp').addEventListener('change',e=>{const f=e.target.files[0];PH='';if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,800/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);PH=c.toDataURL('image/jpeg',.7);toast('Photo ready')};im.onerror=()=>toast('Could not read that image');im.src=r.result};r.readAsDataURL(f)});
+
+const SP={japan:{d:170,x:['Fushimi Inari at sunrise','Tea ceremony in Gion','Day trip to Nara','Nishiki Market lunch','Arashiyama bamboo grove']},iceland:{d:230,x:['Golden Circle drive','Glacier hike','Soak in a geothermal lagoon','Black sand beach and waterfalls','Chase the northern lights']},bangladesh:{d:60,x:['Old Dhaka rickshaw walk','Sundarbans boat trip','Sylhet tea gardens','Cox’s Bazar sunset','Sixty Dome Mosque, Bagerhat']}};
+const GEN=['Arrive, settle in and take an evening walk','Visit the main landmark early, before the crowds','Eat where locals eat; try one regional dish','Day trip to a nearby village or park','Slow morning, then a museum or market','Hire a local guide for one hidden spot','Leave time to wander with no plan'];
+
+$('#gen').onclick=()=>{
+  const dest=$('#td').value.trim();if(!dest)return toast('Enter a destination first');
+  const travelers=$('#trav').value||1;
+  const style=$('#tstyle').value||'Budget';
+  let n=5;const a=$('#ts').value,b=$('#te').value;if(a&&b&&b>=a)n=Math.min(14,Math.round((new Date(b)-new Date(a))/864e5)+1);
+  const key=dest.toLowerCase(),sp=Object.entries(SP).find(([k])=>key.includes(k)||(k==='japan'&&key.includes('kyoto')));
+  const ex=sp?sp[1].x:GEN,lines=Array.from({length:n},(_,i)=>`Day ${i+1}: ${i===0?GEN[0]:ex[(i-1)%ex.length]}`);
+  lines.push('','Food suggestions: Try local street food and regional specialties.');
+  lines.push('Travel tips: Book key sights ahead, carry cash, learn local phrases.');
+  lines.push(`Estimated budget: $${Math.round(n*(sp?sp[1].d:120)/50)*50} for ${travelers} person(s) on a ${style} style.`);
+  $('#ti').value=lines.join('\n');$('#tb').value=Math.round(n*(sp?sp[1].d:120)/50)*50;if(!$('#tn').value)$('#tn').value='Trip to '+dest.split(',')[0];
+  toast('AI drafted a plan — edit freely');
+};
+
+const FB={};'Bangladesh|Dhaka|Taka (BDT)|Bengali;India|New Delhi|Rupee (INR)|Hindi, English;Nepal|Kathmandu|Rupee (NPR)|Nepali;China|Beijing|Yuan (CNY)|Mandarin;Japan|Tokyo|Yen (JPY)|Japanese;Thailand|Bangkok|Baht (THB)|Thai;Vietnam|Hanoi|Dong (VND)|Vietnamese;Indonesia|Jakarta|Rupiah (IDR)|Indonesian;Pakistan|Islamabad|Rupee (PKR)|Urdu, English;Sri Lanka|Colombo|Rupee (LKR)|Sinhala, Tamil;Turkey|Ankara|Lira (TRY)|Turkish;Italy|Rome|Euro (EUR)|Italian;France|Paris|Euro (EUR)|French;Spain|Madrid|Euro (EUR)|Spanish;Germany|Berlin|Euro (EUR)|German;Portugal|Lisbon|Euro (EUR)|Portuguese;Greece|Athens|Euro (EUR)|Greek;Norway|Oslo|Krone (NOK)|Norwegian;Iceland|Reykjavik|Króna (ISK)|Icelandic;United Kingdom|London|Pound (GBP)|English;United States of America|Washington, D.C.|Dollar (USD)|English;Canada|Ottawa|Dollar (CAD)|English, French;Mexico|Mexico City|Peso (MXN)|Spanish;Brazil|Brasília|Real (BRL)|Portuguese;Peru|Lima|Sol (PEN)|Spanish, Quechua;Chile|Santiago|Peso (CLP)|Spanish;Argentina|Buenos Aires|Peso (ARS)|Spanish;Egypt|Cairo|Pound (EGP)|Arabic;Morocco|Rabat|Dirham (MAD)|Arabic, Tamazight;Kenya|Nairobi|Shilling (KES)|Swahili, English;Tanzania|Dodoma|Shilling (TZS)|Swahili, English;South Africa|Pretoria|Rand (ZAR)|11 official languages;Australia|Canberra|Dollar (AUD)|English;New Zealand|Wellington|Dollar (NZD)|English, Māori;Jordan|Amman|Dinar (JOD)|Arabic;Georgia|Tbilisi|Lari (GEL)|Georgian;Philippines|Manila|Peso (PHP)|Filipino, English;Laos|Vientiane|Kip (LAK)|Lao;Costa Rica|San José|Colón (CRC)|Spanish'.split(';').forEach(x=>{const a=x.split('|');FB[a[0]]=a.slice(1)});
+const FACTS={};
+async function loadFacts(n){
+  const put=f=>{const el=$('#facts');if(el&&CUR&&CUR.name===n)el.innerHTML=`<div style="display:flex;gap:6px;flex-wrap:wrap">${f.flag?`<span class="tag">${f.flag}</span>`:''}<span class="tag">🏛 ${esc(f.cap)}</span><span class="tag">💱 ${esc(f.cur)}</span><span class="tag">🗣 ${esc(f.lang)}</span></div>`};
+  if(FACTS[n])return put(FACTS[n]);
+  const fb=FB[n];if(fb)put({cap:fb[0],cur:fb[1],lang:fb[2]});
+  try{
+    const r=await fetch('https://restcountries.com/v3.1/name/'+encodeURIComponent(n)+'?fields=name,capital,currencies,languages,flag').then(r=>r.ok?r.json():Promise.reject());
+    const c=r.find(x=>x.name&&x.name.common===n)||r[0];
+    FACTS[n]={flag:c.flag,cap:(c.capital||['—'])[0],cur:Object.values(c.currencies||{}).map(x=>x.name).join(', ')||'—',lang:Object.values(c.languages||{}).join(', ')||'—'};put(FACTS[n]);
+  }catch(e){if(!fb)put({cap:'—',cur:'—',lang:'—'})}
+}
+
+function renderProfile(){
+  const el=$('#pcard');if(!el||el.contains(document.activeElement))return;
+  const nm=S.get('pname',''),bio=S.get('pbio',''),cities=CITIES.filter(c=>c.s==='v').length;
+  const box=(v,l)=>`<div class="card" style="padding:12px"><b style="font-size:1.6rem;display:block">${v}</b><span class="mu" style="font-size:.8rem">${l}</span></div>`;
+  el.innerHTML=`<div style="display:flex;gap:14px;align-items:flex-end"><div style="width:56px;height:56px;border-radius:50%;flex:none;background:linear-gradient(135deg,#0FA968,#E5483D);display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.4rem">${esc((nm||'U')[0].toUpperCase())}</div><div style="flex:1"><label for="pn">Your name</label><input class="search" id="pn" maxlength="40" placeholder="e.g. Arif" value="${esc(nm)}"></div></div>
+  <div style="margin-top:12px"><label for="pb">Bio</label><textarea class="search" id="pb" maxlength="140" placeholder="Chasing places most people never see">${esc(bio)}</textarea></div>
+  <div class="stats" style="margin:16px 0 0;grid-template-columns:repeat(3,1fr)">${box(st.v.size,'Countries')}${box(cities,'Cities')}${box(st.mems.length,'Stories')}</div>
+  <button class="btn p" id="pshare" style="margin-top:16px;width:100%">Share my profile</button>`;
+}
+const _rs=renderStats;
+renderStats=function(){_rs();renderProfile()};
+$('#pcard').addEventListener('input',e=>{if(e.target.id==='pn')S.set('pname',e.target.value);if(e.target.id==='pb')S.set('pbio',e.target.value)});
+$('#pcard').addEventListener('click',async e=>{
+  if(!e.target.closest('#pshare'))return;
+  const nm=S.get('pname','')||'I',cities=CITIES.filter(c=>c.s==='v').length,url=location.href.split('#')[0];
+  const text=`${nm} explored ${st.v.size} countries and ${cities} cities with Unseen World 🌍 #UnseenWorld`;
+  try{if(navigator.share)await navigator.share({title:'My Unseen World',text,url});else{await navigator.clipboard.writeText(text+' '+url);toast('Profile link copied')}}catch(x){}
+});
+
+const INFO={
+  About:'Unseen World helps you discover places most people never see, plan trips and keep every memory. It is free to use.',
+  Privacy:'Countries, cities, trips, memories and photos stay in your browser on this device. City search sends only the text you type to OpenStreetMap, and country facts come from REST Countries. There are no accounts and no tracking.',
+  Terms:'Unseen World is provided free and as is. Budgets and plans are rough estimates; check visas, safety and bookings yourself.',
+  Contact:'Reach out to us at hello@unseenworld.app or via our social media channels.'
+};
+const dlg=document.createElement('dialog');document.body.appendChild(dlg);dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+document.querySelector('footer').addEventListener('click',e=>{const b=e.target.closest('[data-info]');if(!b)return;dlg.innerHTML=`<h3 style="margin-bottom:10px">${b.dataset.info}</h3><p class="mu">${INFO[b.dataset.info]}</p><button class="btn sm" style="margin-top:16px" id="dclose">Close</button>`;dlg.showModal();$('#dclose').onclick=()=>dlg.close()});
+
+/* PWA install prompt */
+(()=>{
+  let ev;
+  addEventListener('beforeinstallprompt',e=>{e.preventDefault();ev=e;$('#install').hidden=false});
+  $('#install').onclick=async()=>{if(!ev)return;ev.prompt();await ev.userChoice;ev=null;$('#install').hidden=true};
+  addEventListener('appinstalled',()=>{$('#install').hidden=true;toast('Installed')});
+})();
+
+renderStats();renderCountries();renderChips();renderDests();renderTrending();renderTrips();renderMems();renderPlans();renderBadges();applyLang(S.get('lang',(navigator.language||'en').slice(0,2)));initGlobe();openFromHash();addEventListener('hashchange',openFromHash);
+})();
+</script>
+</body>
+</html>
